@@ -1,6 +1,9 @@
 package impl
 
-import "log"
+import (
+	"fmt"
+	"sort"
+)
 
 func getStackerIds() []int {
 	stackers := GetStackers()
@@ -44,6 +47,9 @@ func GetStackers() map[int]string {
 		114314986: "Sun",
 		168600255: "Sandfish",
 		270293472: "TeaGuvnor",
+		66425630: "OK",
+		315696109: "Bolf",
+
 
 
 
@@ -68,9 +74,26 @@ func InitialStandings() map[int]int {
 
 	return standings
 }
-
 func PrettyPrintStandings(standings map[int]int) {
-	for id, mmr  := range standings {
-		log.Printf("%s: %d", GetNameForId(id), mmr)
+	// Creating a slice to hold the key-value pairs from the map
+	var pairs []struct {
+		Key   int
+		Value int
+	}
+	for k, v := range standings {
+		pairs = append(pairs, struct {
+			Key   int
+			Value int
+		}{k, v})
+	}
+
+	// Sorting the slice by value in descending order
+	sort.Slice(pairs, func(i, j int) bool {
+		return pairs[i].Value > pairs[j].Value // Change '>' to '<' for ascending order
+	})
+
+	// Printing the sorted key-value pairs
+	for _, pair := range pairs {
+		fmt.Printf("%s: %d\n", GetNameForId(pair.Key), pair.Value)
 	}
 }
