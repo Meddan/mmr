@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type ListMatchWrapperWrapper struct {
 	Result ListMatchWrapper `json:"result"`
 }
@@ -18,4 +20,13 @@ type ListMatch struct {
 	LobbyType int `json:"lobby_type"`
 	Players []Player `json:"players"`
 	SeqNumber int `json:"match_seq_num"`
+}
+
+type OpenDotaListMatch struct {
+	Id                int    `json:"match_id"`
+ }
+
+ func (m OpenDotaListMatch) String() string {
+	p := fmt.Sprintf("Id: %d", m.Id)
+	return p
 }

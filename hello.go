@@ -1,7 +1,7 @@
 package main
 
 import (
-	opendota "example/hello/opendota/impl"
+	"example/hello/impl"
 	"log"
 )
 
@@ -63,11 +63,59 @@ func main() {
 	}*/
 
 
-	matches, _ := opendota.GetMatchesForPlayer(28193363, 5000);
-
-	log.Printf("Matches: %d", len(matches))
 	
 	//impl.GetMatchesBySequenceNumber(seq)
 	//7321070778
+	//testOneMatch()
+	testMMR()
 }
 
+func testMMR() {
+	matches := impl.GetMatchIds(28193363, 500, 0)
+
+	standings := impl.InitialStandings()
+
+	log.Printf("Matches: %d", len(matches))
+
+	unrankedStacks := 0
+
+	for _, match  := range matches {
+		m := impl.GetMatch(match.Id)
+
+		if(impl.CheckIfUnrankedStack(m)) {
+			unrankedStacks +=1
+			winners, losers := impl.FindWinnersAndLosers(m)
+			/*
+			if(len(winners) != 0 && len(losers) != 0) {
+				log.Printf("Outhouse: %d", m.Id)
+			}
+			*/
+			for _, w  := range winners {
+				standings[w] = standings[w] + 25
+			}
+
+			for _, l  := range losers {
+				standings[l] = standings[l] - 25
+			}
+		} else {
+			if(m.LobbyType == 0) {
+				log.Printf("Not stack: %d : %d", m.LobbyType, m.Id)
+			}
+		}
+		
+	}
+
+	log.Printf("# of stacks: %d", unrankedStacks)
+	impl.PrettyPrintStandings(standings)
+	
+}
+
+
+func testOneMatch() {
+	m := impl.GetMatch(7467669827)
+	stack := impl.CheckIfUnrankedStack(m)
+
+	log.Printf("p: %v", m.Players)
+
+	log.Printf("stack: %t", stack)
+}

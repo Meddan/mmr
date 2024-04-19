@@ -63,7 +63,6 @@ func getStackersOnTeams(match Match) ([]int, []int) {
 
 func CheckIfUnrankedStack(match Match) bool {
 	if(match.LobbyType == 0) {
-		log.Println("lobby 0")
 		//TODO: Handle outhouses
 		partySize := 0
 
@@ -74,8 +73,7 @@ func CheckIfUnrankedStack(match Match) bool {
 				partySize += 1;
 			}
 		}
-		log.Println(partySize)
-		return partySize == 5
+		return partySize >= 5
 	}
 	return false
 }

@@ -16,7 +16,7 @@ type Match struct {
 	RadiantWin			bool		`json:"radiant_win"`
  }
 
- func (m Match) TextOutput() string {
+ func (m Match) String() string {
 	p := fmt.Sprintf("Match Id: %d, Players: %s", m.Id, m.Players)
 	return p
 }
